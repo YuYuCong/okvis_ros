@@ -120,7 +120,7 @@ bool Publisher::writeCsvDescription()
     return false;
   if (!csvFile_->good())
     return false;
-  *csvFile_ << "timestamp" << ", " << "p_WS_W_x" << ", " << "p_WS_W_y" << ", "
+  *csvFile_ << "# timestamp" << ", " << "p_WS_W_x" << ", " << "p_WS_W_y" << ", "
             << "p_WS_W_z" << ", " << "q_WS_x" << ", " << "q_WS_y" << ", "
             << "q_WS_z" << ", " << "q_WS_w" << ", " << "v_WS_W_x" << ", "
             << "v_WS_W_y" << ", " << "v_WS_W_z" << ", " << "b_g_x" << ", "
@@ -136,7 +136,7 @@ bool Publisher::writeLandmarksCsvDescription()
     return false;
   if (!csvLandmarksFile_->good())
     return false;
-  *csvLandmarksFile_ << ", " << "id" << ", " << "l_x" << ", " << "l_y" << ", "
+  *csvLandmarksFile_ << "# " << "id" << ", " << "l_x" << ", " << "l_y" << ", "
                      << "l_z" << ", " << "l_w" << ", " << "quality, "
                      << "distance" << std::endl;
   return true;
@@ -509,6 +509,7 @@ void Publisher::publishFullStateAsCallback(
   publishOdometry();
   publishTransform();
   publishPath();
+  csvSaveFullStateAsCallback(t, T_WS, speedAndBiases, omega_S);
 }
 
 // Set and write full state to CSV file.
@@ -517,8 +518,8 @@ void Publisher::csvSaveFullStateAsCallback(
     const Eigen::Matrix<double, 9, 1> & speedAndBiases,
     const Eigen::Matrix<double, 3, 1> & omega_S)
 {
-  setTime(t);
-  setOdometry(T_WS, speedAndBiases, omega_S);  // TODO: provide setters for this hack
+  // setTime(t);
+  // setOdometry(T_WS, speedAndBiases, omega_S);  // TODO: provide setters for this hack
   if (csvFile_) {
     //LOG(INFO)<<"filePtr: ok; ";
     if (csvFile_->good()) {
